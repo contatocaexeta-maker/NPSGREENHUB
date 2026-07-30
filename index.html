@@ -1,0 +1,521 @@
+<title>NPS GreenHub</title>
+<style>
+  :root {
+    --bg: #F7F5EF;
+    --card: #FFFFFE;
+    --ink: #1B2420;
+    --ink-soft: #4B564F;
+    --muted: #8A958E;
+    --line: #E3E0D6;
+    --accent: #2F6F4F;
+    --accent-ink: #F7F5EF;
+    --accent-soft: #DCEAE0;
+    --detractor: #B5533D;
+    --passive: #C08A2E;
+    --promoter: #2F6F4F;
+    --shadow: 0 1px 2px rgba(27,36,32,0.04), 0 8px 24px rgba(27,36,32,0.06);
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg: #10140F;
+      --card: #171D16;
+      --ink: #EDEFEA;
+      --ink-soft: #B7C0B7;
+      --muted: #7C877E;
+      --line: #2A332A;
+      --accent: #5FBE8A;
+      --accent-ink: #0E1710;
+      --accent-soft: #1D2A22;
+      --detractor: #E08469;
+      --passive: #E0B15C;
+      --promoter: #5FBE8A;
+      --shadow: 0 1px 2px rgba(0,0,0,0.2), 0 12px 32px rgba(0,0,0,0.35);
+    }
+  }
+  :root[data-theme="dark"] {
+    --bg: #10140F; --card: #171D16; --ink: #EDEFEA; --ink-soft: #B7C0B7;
+    --muted: #7C877E; --line: #2A332A; --accent: #5FBE8A; --accent-ink: #0E1710;
+    --accent-soft: #1D2A22; --detractor: #E08469; --passive: #E0B15C; --promoter: #5FBE8A;
+    --shadow: 0 1px 2px rgba(0,0,0,0.2), 0 12px 32px rgba(0,0,0,0.35);
+  }
+  :root[data-theme="light"] {
+    --bg: #F7F5EF; --card: #FFFFFE; --ink: #1B2420; --ink-soft: #4B564F;
+    --muted: #8A958E; --line: #E3E0D6; --accent: #2F6F4F; --accent-ink: #F7F5EF;
+    --accent-soft: #DCEAE0; --detractor: #B5533D; --passive: #C08A2E; --promoter: #2F6F4F;
+    --shadow: 0 1px 2px rgba(27,36,32,0.04), 0 8px 24px rgba(27,36,32,0.06);
+  }
+
+  * { box-sizing: border-box; }
+  html, body { height: 100%; }
+  body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--ink);
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Inter, Roboto, sans-serif;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    padding: 24px;
+    overflow-x: hidden;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    * { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; }
+  }
+
+  .app {
+    width: 100%;
+    max-width: 640px;
+    display: flex;
+    flex-direction: column;
+    gap: 28px;
+  }
+
+  .topbar {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+  }
+
+  .brand {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-weight: 700;
+    letter-spacing: -0.01em;
+    font-size: 0.95rem;
+    color: var(--ink-soft);
+    white-space: nowrap;
+  }
+  .brand .dot {
+    width: 9px; height: 9px; border-radius: 50%;
+    background: var(--accent);
+    box-shadow: 0 0 0 3px var(--accent-soft);
+  }
+
+  .progress-track {
+    flex: 1;
+    height: 4px;
+    background: var(--line);
+    border-radius: 4px;
+    overflow: hidden;
+  }
+  .progress-fill {
+    height: 100%;
+    width: 0%;
+    background: var(--accent);
+    border-radius: 4px;
+    transition: width 0.45s cubic-bezier(.4,0,.2,1);
+  }
+
+  .step-count {
+    font-size: 0.8rem;
+    color: var(--muted);
+    font-variant-numeric: tabular-nums;
+    white-space: nowrap;
+  }
+
+  .card {
+    background: var(--card);
+    border: 1px solid var(--line);
+    border-radius: 20px;
+    box-shadow: var(--shadow);
+    padding: 48px 40px;
+    min-height: 380px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    position: relative;
+  }
+
+  @media (max-width: 560px) {
+    .card { padding: 32px 22px; min-height: 420px; }
+  }
+
+  .screen {
+    display: none;
+    flex-direction: column;
+    gap: 28px;
+    animation: rise 0.4s cubic-bezier(.16,1,.3,1);
+  }
+  .screen.active { display: flex; }
+  @keyframes rise {
+    from { opacity: 0; transform: translateY(14px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .eyebrow {
+    font-size: 0.78rem;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--accent);
+  }
+
+  .question {
+    font-size: 1.5rem;
+    font-weight: 700;
+    letter-spacing: -0.01em;
+    line-height: 1.3;
+    text-wrap: balance;
+    margin: 0;
+  }
+
+  .scale-wrap {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .scale {
+    display: grid;
+    grid-template-columns: repeat(11, 1fr);
+    gap: 6px;
+  }
+  @media (max-width: 480px) {
+    .scale { grid-template-columns: repeat(6, 1fr); }
+  }
+
+  .num-btn {
+    aspect-ratio: 1;
+    border-radius: 10px;
+    border: 1.5px solid var(--line);
+    background: transparent;
+    color: var(--ink);
+    font-size: 1rem;
+    font-weight: 600;
+    font-variant-numeric: tabular-nums;
+    cursor: pointer;
+    transition: all 0.15s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .num-btn:hover {
+    border-color: var(--accent);
+    background: var(--accent-soft);
+  }
+  .num-btn:focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 2px;
+  }
+  .num-btn.selected {
+    background: var(--accent);
+    border-color: var(--accent);
+    color: var(--accent-ink);
+  }
+
+  .scale-labels {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.75rem;
+    color: var(--muted);
+  }
+
+  textarea {
+    width: 100%;
+    min-height: 140px;
+    resize: vertical;
+    border: 1.5px solid var(--line);
+    border-radius: 12px;
+    background: var(--bg);
+    color: var(--ink);
+    font-family: inherit;
+    font-size: 1rem;
+    padding: 14px 16px;
+    line-height: 1.5;
+  }
+  textarea:focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 1px;
+  }
+  textarea::placeholder { color: var(--muted); }
+
+  .nav-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+  }
+
+  .hint {
+    font-size: 0.8rem;
+    color: var(--muted);
+  }
+
+  button.primary, button.ghost {
+    font-family: inherit;
+    font-size: 0.95rem;
+    font-weight: 600;
+    border-radius: 10px;
+    padding: 11px 22px;
+    cursor: pointer;
+    border: none;
+    transition: transform 0.1s ease, opacity 0.15s ease;
+  }
+  button.primary {
+    background: var(--accent);
+    color: var(--accent-ink);
+  }
+  button.primary:disabled {
+    opacity: 0.35;
+    cursor: not-allowed;
+  }
+  button.primary:not(:disabled):hover { transform: translateY(-1px); }
+  button.ghost {
+    background: transparent;
+    color: var(--ink-soft);
+    border: 1.5px solid var(--line);
+  }
+  button.ghost:hover { border-color: var(--muted); }
+
+  .final-badge {
+    display: inline-flex;
+    align-self: flex-start;
+    align-items: center;
+    gap: 8px;
+    padding: 6px 14px;
+    border-radius: 999px;
+    font-size: 0.8rem;
+    font-weight: 700;
+    letter-spacing: 0.02em;
+    text-transform: uppercase;
+  }
+
+  .summary {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    max-height: 260px;
+    overflow-y: auto;
+    border-top: 1px solid var(--line);
+    padding-top: 16px;
+  }
+  .summary-row {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: 12px;
+    font-size: 0.85rem;
+    padding: 6px 0;
+    border-bottom: 1px dashed var(--line);
+  }
+  .summary-row span:first-child { color: var(--ink-soft); }
+  .summary-row span:last-child {
+    font-weight: 700;
+    font-variant-numeric: tabular-nums;
+    color: var(--ink);
+    text-align: right;
+    max-width: 55%;
+  }
+
+  .actions {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+  }
+
+  .toast {
+    position: fixed;
+    bottom: 24px;
+    left: 50%;
+    transform: translateX(-50%) translateY(20px);
+    background: var(--ink);
+    color: var(--bg);
+    padding: 10px 18px;
+    border-radius: 10px;
+    font-size: 0.85rem;
+    opacity: 0;
+    pointer-events: none;
+    transition: all 0.25s ease;
+  }
+  .toast.show {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+  }
+</style>
+
+<div class="app">
+  <div class="topbar">
+    <div class="brand"><span class="dot"></span>GreenHub · NPS</div>
+    <div class="progress-track"><div class="progress-fill" id="progressFill"></div></div>
+    <div class="step-count" id="stepCount">1 / 9</div>
+  </div>
+
+  <div class="card" id="card">
+    <!-- Intro -->
+    <div class="screen active" data-screen="intro">
+      <div class="eyebrow">Pesquisa de satisfação</div>
+      <h1 class="question">Sua opinião melhora o trabalho que fazemos por você.</h1>
+      <p style="color:var(--ink-soft); font-size:0.95rem; line-height:1.5; margin:0;">
+        São 8 perguntas rápidas, leva menos de 2 minutos. Responda com sinceridade — isso é o que nos ajuda a ajustar o que não está funcionando.
+      </p>
+      <div class="nav-row">
+        <span class="hint">Suas respostas ficam só nesta sessão</span>
+        <button class="primary" onclick="go(1)">Começar →</button>
+      </div>
+    </div>
+
+    <!-- Questions injected by JS -->
+    <div id="questionsMount"></div>
+
+    <!-- Final -->
+    <div class="screen" data-screen="final">
+      <span class="final-badge" id="finalBadge"></span>
+      <h1 class="question">Obrigado! Sua nota foi registrada.</h1>
+      <p style="color:var(--ink-soft); font-size:0.9rem; margin:0;">Resumo das respostas desta sessão:</p>
+      <div class="summary" id="summary"></div>
+      <div class="actions">
+        <button class="primary" onclick="copyResults()">Copiar respostas</button>
+        <button class="ghost" onclick="downloadResults()">Baixar .txt</button>
+        <button class="ghost" onclick="restart()">Responder de novo</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+  const QUESTIONS = [
+    { id: "q1", type: "scale", eyebrow: "Pergunta 1 de 8", text: "De 0 a 10, qual a probabilidade de você recomendar a GreenHub para um amigo ou colega?", low: "Nada provável", high: "Extremamente provável" },
+    { id: "q2", type: "scale", eyebrow: "Pergunta 2 de 8", text: "De 0 a 10, quanto você avalia a comunicação no grupo?", low: "Muito ruim", high: "Excelente" },
+    { id: "q3", type: "scale", eyebrow: "Pergunta 3 de 8", text: "De 0 a 10, quanto você avalia a previsibilidade dos resultados?", low: "Muito ruim", high: "Excelente" },
+    { id: "q4", type: "scale", eyebrow: "Pergunta 4 de 8", text: "De 0 a 10, quanto você avalia o treinamento comercial?", low: "Muito ruim", high: "Excelente" },
+    { id: "q5", type: "scale", eyebrow: "Pergunta 5 de 8", text: "De 0 a 10, quanto você avalia o resultado em campanhas?", low: "Muito ruim", high: "Excelente" },
+    { id: "q6", type: "scale", eyebrow: "Pergunta 6 de 8", text: "De 0 a 10, quanto você avalia os materiais estáticos enviados?", low: "Muito ruim", high: "Excelente" },
+    { id: "q7", type: "scale", eyebrow: "Pergunta 7 de 8", text: "De 0 a 10, quanto você avalia os materiais em vídeo enviados?", low: "Muito ruim", high: "Excelente" },
+    { id: "q8", type: "text", eyebrow: "Pergunta 8 de 8", text: "Justifique o porquê da sua nota.", placeholder: "Conte o que fez você dar essa nota — o que foi bom, o que pode melhorar..." }
+  ];
+
+  const answers = {};
+  let current = 0; // 0 = intro, 1..8 = questions, 9 = final
+  const total = QUESTIONS.length + 1;
+
+  const mount = document.getElementById("questionsMount");
+  QUESTIONS.forEach((q, i) => {
+    const el = document.createElement("div");
+    el.className = "screen";
+    el.setAttribute("data-screen", q.id);
+
+    if (q.type === "scale") {
+      const nums = Array.from({ length: 11 }, (_, n) => n);
+      el.innerHTML = `
+        <div class="eyebrow">${q.eyebrow}</div>
+        <h1 class="question">${q.text}</h1>
+        <div class="scale-wrap">
+          <div class="scale">
+            ${nums.map(n => `<button type="button" class="num-btn" data-val="${n}" onclick="selectScale('${q.id}', ${n}, ${i})">${n}</button>`).join("")}
+          </div>
+          <div class="scale-labels"><span>${q.low}</span><span>${q.high}</span></div>
+        </div>
+        <div class="nav-row">
+          <button class="ghost" onclick="go(${i})">← Voltar</button>
+          <button class="primary" id="next-${q.id}" disabled onclick="go(${i + 2})">Continuar →</button>
+        </div>
+      `;
+    } else {
+      el.innerHTML = `
+        <div class="eyebrow">${q.eyebrow}</div>
+        <h1 class="question">${q.text}</h1>
+        <textarea id="input-${q.id}" placeholder="${q.placeholder}" oninput="handleText('${q.id}', this.value)"></textarea>
+        <div class="nav-row">
+          <button class="ghost" onclick="go(${i})">← Voltar</button>
+          <button class="primary" onclick="finish()">Enviar →</button>
+        </div>
+      `;
+    }
+    mount.appendChild(el);
+  });
+
+  function showScreen(names) {
+    document.querySelectorAll(".screen").forEach(s => s.classList.remove("active"));
+    const target = document.querySelector(`[data-screen="${names}"]`);
+    if (target) target.classList.add("active");
+  }
+
+  function go(step) {
+    current = step;
+    const names = ["intro", ...QUESTIONS.map(q => q.id), "final"];
+    showScreen(names[step]);
+    document.getElementById("progressFill").style.width = `${(step / (total)) * 100}%`;
+    document.getElementById("stepCount").textContent = `${Math.min(step + 1, total)} / ${total}`;
+  }
+
+  function selectScale(id, val, qIndex) {
+    answers[id] = val;
+    const screen = document.querySelector(`[data-screen="${id}"]`);
+    screen.querySelectorAll(".num-btn").forEach(b => {
+      b.classList.toggle("selected", Number(b.dataset.val) === val);
+    });
+    const nextBtn = document.getElementById(`next-${id}`);
+    nextBtn.disabled = false;
+    setTimeout(() => go(qIndex + 2), 220);
+  }
+
+  function handleText(id, value) {
+    answers[id] = value.trim();
+  }
+
+  function finish() {
+    const badge = document.getElementById("finalBadge");
+    const score = answers.q1;
+    let label = "Sem nota", cls = "muted";
+    if (typeof score === "number") {
+      if (score >= 9) { label = "Promotor"; cls = "promoter"; }
+      else if (score >= 7) { label = "Neutro"; cls = "passive"; }
+      else { label = "Detrator"; cls = "detractor"; }
+    }
+    badge.textContent = label;
+    badge.style.background = `var(--${cls}, var(--muted))`;
+    badge.style.color = "var(--accent-ink)";
+    if (cls === "muted") { badge.style.background = "var(--line)"; badge.style.color = "var(--ink-soft)"; }
+
+    const summary = document.getElementById("summary");
+    summary.innerHTML = QUESTIONS.map(q => {
+      const val = answers[q.id];
+      const display = q.type === "scale" ? (typeof val === "number" ? val : "—") : (val || "—");
+      return `<div class="summary-row"><span>${q.text}</span><span>${display}</span></div>`;
+    }).join("");
+
+    go(total - 1);
+  }
+
+  function buildResultText() {
+    const lines = QUESTIONS.map((q, i) => `${i + 1}. ${q.text}\n   Resposta: ${answers[q.id] ?? "—"}`);
+    return `NPS GreenHub — respostas\n\n${lines.join("\n\n")}`;
+  }
+
+  function showToast(msg) {
+    const toast = document.getElementById("toast");
+    toast.textContent = msg;
+    toast.classList.add("show");
+    setTimeout(() => toast.classList.remove("show"), 1800);
+  }
+
+  function copyResults() {
+    const text = buildResultText();
+    navigator.clipboard.writeText(text).then(() => showToast("Respostas copiadas"));
+  }
+
+  function downloadResults() {
+    const text = buildResultText();
+    const blob = new Blob([text], { type: "text/plain" });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = "nps-greenhub.txt";
+    a.click();
+    URL.revokeObjectURL(url);
+  }
+
+  function restart() {
+    Object.keys(answers).forEach(k => delete answers[k]);
+    document.querySelectorAll(".num-btn.selected").forEach(b => b.classList.remove("selected"));
+    document.querySelectorAll("textarea").forEach(t => t.value = "");
+    document.querySelectorAll("[id^='next-']").forEach(b => b.disabled = true);
+    go(0);
+  }
+
+  go(0);
+</script>
