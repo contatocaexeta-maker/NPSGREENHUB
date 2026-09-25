@@ -103,10 +103,12 @@
   }
   .progress-fill {
     height: 100%;
-    width: 0%;
+    width: 100%;
     background: var(--accent);
     border-radius: 4px;
-    transition: width 0.45s cubic-bezier(.4,0,.2,1);
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 0.45s cubic-bezier(.4,0,.2,1);
   }
 
   .step-count {
@@ -436,7 +438,7 @@
     current = step;
     const names = ["intro", ...QUESTIONS.map(q => q.id), "final"];
     showScreen(names[step]);
-    document.getElementById("progressFill").style.width = `${(step / (total)) * 100}%`;
+    document.getElementById("progressFill").style.transform = `scaleX(${step / total})`;
     document.getElementById("stepCount").textContent = `${Math.min(step + 1, total)} / ${total}`;
   }
 
