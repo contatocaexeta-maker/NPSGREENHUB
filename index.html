@@ -348,7 +348,7 @@
       <div class="eyebrow">Pesquisa de satisfação</div>
       <h1 class="question">Sua opinião melhora o trabalho que fazemos por você.</h1>
       <p style="color:var(--ink-soft); font-size:0.95rem; line-height:1.5; margin:0;">
-        São 6 perguntas rápidas, leva menos de 2 minutos. Responda com sinceridade — isso é o que nos ajuda a ajustar o que não está funcionando.
+        São 6 perguntas rápidas, leva menos de 2 minutos. Responda com sinceridade, isso é o que nos ajuda a ajustar o que não está funcionando.
       </p>
       <div class="nav-row">
         <span class="hint">Suas respostas ficam só nesta sessão</span>
@@ -383,7 +383,7 @@
     { id: "q3", type: "scale", eyebrow: "Pergunta 3 de 6", text: "De 0 a 10, quanto você avalia a previsibilidade dos resultados?", low: "Muito ruim", high: "Excelente" },
     { id: "q4", type: "scale", eyebrow: "Pergunta 4 de 6", text: "De 0 a 10, quanto você avalia o resultado em campanhas?", low: "Muito ruim", high: "Excelente" },
     { id: "q5", type: "scale", eyebrow: "Pergunta 5 de 6", text: "De 0 a 10, quanto você avalia os materiais em vídeo enviados?", low: "Muito ruim", high: "Excelente" },
-    { id: "q6", type: "text", eyebrow: "Pergunta 6 de 6", text: "Justifique o porquê da sua nota.", placeholder: "Conte o que fez você dar essa nota — o que foi bom, o que pode melhorar..." }
+    { id: "q6", type: "text", eyebrow: "Pergunta 6 de 6", text: "Justifique o porquê da sua nota.", placeholder: "Conte o que fez você dar essa nota: o que foi bom, o que pode melhorar..." }
   ];
 
   const answers = {};
@@ -472,7 +472,7 @@
     const summary = document.getElementById("summary");
     summary.innerHTML = QUESTIONS.map(q => {
       const val = answers[q.id];
-      const display = q.type === "scale" ? (typeof val === "number" ? val : "—") : (val || "—");
+      const display = q.type === "scale" ? (typeof val === "number" ? val : "-") : (val || "-");
       return `<div class="summary-row"><span>${q.text}</span><span>${display}</span></div>`;
     }).join("");
 
@@ -480,8 +480,8 @@
   }
 
   function buildResultText() {
-    const lines = QUESTIONS.map((q, i) => `${i + 1}. ${q.text}\n   Resposta: ${answers[q.id] ?? "—"}`);
-    return `NPS GreenHub — respostas\n\n${lines.join("\n\n")}`;
+    const lines = QUESTIONS.map((q, i) => `${i + 1}. ${q.text}\n   Resposta: ${answers[q.id] ?? "-"}`);
+    return `NPS GreenHub - respostas\n\n${lines.join("\n\n")}`;
   }
 
   function showToast(msg) {
