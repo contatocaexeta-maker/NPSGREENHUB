@@ -1,48 +1,48 @@
 <title>NPS GreenHub</title>
 <style>
   :root {
-    --bg: #F7F5EF;
-    --card: #FFFFFE;
-    --ink: #1B2420;
-    --ink-soft: #4B564F;
-    --muted: #8A958E;
-    --line: #E3E0D6;
-    --accent: #2F6F4F;
-    --accent-ink: #F7F5EF;
-    --accent-soft: #DCEAE0;
-    --detractor: #B5533D;
-    --passive: #C08A2E;
-    --promoter: #2F6F4F;
-    --shadow: 0 1px 2px rgba(27,36,32,0.04), 0 8px 24px rgba(27,36,32,0.06);
+    --bg: #FFFFFF;
+    --card: #FFFFFF;
+    --ink: #0D0F0D;
+    --ink-soft: #454A46;
+    --muted: #8C918D;
+    --line: #E6E7E4;
+    --accent: #157347;
+    --accent-ink: #FFFFFF;
+    --accent-soft: #EAF4EE;
+    --detractor: #0D0F0D;
+    --passive: #6B706C;
+    --promoter: #157347;
+    --shadow: 0 1px 2px rgba(13,15,13,0.03), 0 8px 24px rgba(13,15,13,0.05);
   }
   @media (prefers-color-scheme: dark) {
     :root {
-      --bg: #10140F;
-      --card: #171D16;
-      --ink: #EDEFEA;
-      --ink-soft: #B7C0B7;
-      --muted: #7C877E;
-      --line: #2A332A;
-      --accent: #5FBE8A;
-      --accent-ink: #0E1710;
-      --accent-soft: #1D2A22;
-      --detractor: #E08469;
-      --passive: #E0B15C;
-      --promoter: #5FBE8A;
-      --shadow: 0 1px 2px rgba(0,0,0,0.2), 0 12px 32px rgba(0,0,0,0.35);
+      --bg: #0B0C0B;
+      --card: #131513;
+      --ink: #F5F6F4;
+      --ink-soft: #C2C5C1;
+      --muted: #7C807D;
+      --line: #262825;
+      --accent: #3FAE7A;
+      --accent-ink: #05130C;
+      --accent-soft: #142019;
+      --detractor: #F5F6F4;
+      --passive: #9A9E9A;
+      --promoter: #3FAE7A;
+      --shadow: 0 1px 2px rgba(0,0,0,0.25), 0 12px 32px rgba(0,0,0,0.4);
     }
   }
   :root[data-theme="dark"] {
-    --bg: #10140F; --card: #171D16; --ink: #EDEFEA; --ink-soft: #B7C0B7;
-    --muted: #7C877E; --line: #2A332A; --accent: #5FBE8A; --accent-ink: #0E1710;
-    --accent-soft: #1D2A22; --detractor: #E08469; --passive: #E0B15C; --promoter: #5FBE8A;
-    --shadow: 0 1px 2px rgba(0,0,0,0.2), 0 12px 32px rgba(0,0,0,0.35);
+    --bg: #0B0C0B; --card: #131513; --ink: #F5F6F4; --ink-soft: #C2C5C1;
+    --muted: #7C807D; --line: #262825; --accent: #3FAE7A; --accent-ink: #05130C;
+    --accent-soft: #142019; --detractor: #F5F6F4; --passive: #9A9E9A; --promoter: #3FAE7A;
+    --shadow: 0 1px 2px rgba(0,0,0,0.25), 0 12px 32px rgba(0,0,0,0.4);
   }
   :root[data-theme="light"] {
-    --bg: #F7F5EF; --card: #FFFFFE; --ink: #1B2420; --ink-soft: #4B564F;
-    --muted: #8A958E; --line: #E3E0D6; --accent: #2F6F4F; --accent-ink: #F7F5EF;
-    --accent-soft: #DCEAE0; --detractor: #B5533D; --passive: #C08A2E; --promoter: #2F6F4F;
-    --shadow: 0 1px 2px rgba(27,36,32,0.04), 0 8px 24px rgba(27,36,32,0.06);
+    --bg: #FFFFFF; --card: #FFFFFF; --ink: #0D0F0D; --ink-soft: #454A46;
+    --muted: #8C918D; --line: #E6E7E4; --accent: #157347; --accent-ink: #FFFFFF;
+    --accent-soft: #EAF4EE; --detractor: #0D0F0D; --passive: #6B706C; --promoter: #157347;
+    --shadow: 0 1px 2px rgba(13,15,13,0.03), 0 8px 24px rgba(13,15,13,0.05);
   }
 
   * { box-sizing: border-box; }
@@ -348,7 +348,7 @@
       <div class="eyebrow">Pesquisa de satisfação</div>
       <h1 class="question">Sua opinião melhora o trabalho que fazemos por você.</h1>
       <p style="color:var(--ink-soft); font-size:0.95rem; line-height:1.5; margin:0;">
-        São 8 perguntas rápidas, leva menos de 2 minutos. Responda com sinceridade — isso é o que nos ajuda a ajustar o que não está funcionando.
+        São 6 perguntas rápidas, leva menos de 2 minutos. Responda com sinceridade — isso é o que nos ajuda a ajustar o que não está funcionando.
       </p>
       <div class="nav-row">
         <span class="hint">Suas respostas ficam só nesta sessão</span>
@@ -378,14 +378,12 @@
 
 <script>
   const QUESTIONS = [
-    { id: "q1", type: "scale", eyebrow: "Pergunta 1 de 8", text: "De 0 a 10, qual a probabilidade de você recomendar a GreenHub para um amigo ou colega?", low: "Nada provável", high: "Extremamente provável" },
-    { id: "q2", type: "scale", eyebrow: "Pergunta 2 de 8", text: "De 0 a 10, quanto você avalia a comunicação no grupo?", low: "Muito ruim", high: "Excelente" },
-    { id: "q3", type: "scale", eyebrow: "Pergunta 3 de 8", text: "De 0 a 10, quanto você avalia a previsibilidade dos resultados?", low: "Muito ruim", high: "Excelente" },
-    { id: "q4", type: "scale", eyebrow: "Pergunta 4 de 8", text: "De 0 a 10, quanto você avalia o treinamento comercial?", low: "Muito ruim", high: "Excelente" },
-    { id: "q5", type: "scale", eyebrow: "Pergunta 5 de 8", text: "De 0 a 10, quanto você avalia o resultado em campanhas?", low: "Muito ruim", high: "Excelente" },
-    { id: "q6", type: "scale", eyebrow: "Pergunta 6 de 8", text: "De 0 a 10, quanto você avalia os materiais estáticos enviados?", low: "Muito ruim", high: "Excelente" },
-    { id: "q7", type: "scale", eyebrow: "Pergunta 7 de 8", text: "De 0 a 10, quanto você avalia os materiais em vídeo enviados?", low: "Muito ruim", high: "Excelente" },
-    { id: "q8", type: "text", eyebrow: "Pergunta 8 de 8", text: "Justifique o porquê da sua nota.", placeholder: "Conte o que fez você dar essa nota — o que foi bom, o que pode melhorar..." }
+    { id: "q1", type: "scale", eyebrow: "Pergunta 1 de 6", text: "De 0 a 10, qual a probabilidade de você recomendar a GreenHub para um amigo ou colega?", low: "Nada provável", high: "Extremamente provável" },
+    { id: "q2", type: "scale", eyebrow: "Pergunta 2 de 6", text: "De 0 a 10, quanto você avalia a comunicação no grupo?", low: "Muito ruim", high: "Excelente" },
+    { id: "q3", type: "scale", eyebrow: "Pergunta 3 de 6", text: "De 0 a 10, quanto você avalia a previsibilidade dos resultados?", low: "Muito ruim", high: "Excelente" },
+    { id: "q4", type: "scale", eyebrow: "Pergunta 4 de 6", text: "De 0 a 10, quanto você avalia o resultado em campanhas?", low: "Muito ruim", high: "Excelente" },
+    { id: "q5", type: "scale", eyebrow: "Pergunta 5 de 6", text: "De 0 a 10, quanto você avalia os materiais em vídeo enviados?", low: "Muito ruim", high: "Excelente" },
+    { id: "q6", type: "text", eyebrow: "Pergunta 6 de 6", text: "Justifique o porquê da sua nota.", placeholder: "Conte o que fez você dar essa nota — o que foi bom, o que pode melhorar..." }
   ];
 
   const answers = {};
